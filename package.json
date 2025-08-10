@@ -4,16 +4,21 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "NODE_OPTIONS=--openssl-legacy-provider vite",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
+     
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.0",
     "@tailwindcss/vite": "^4.1.11",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.525.0",
+    "miragejs": "^0.1.48",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router-dom": "^7.7.1",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
@@ -22,7 +27,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
-    "eslint": "^9.30.1",
+    "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
