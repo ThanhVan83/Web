@@ -3,7 +3,7 @@ import DefaultCalendar from "./DefaultCalendar";
 import InputBirthday from "./InputBirthday";
 
 function Calendar() {
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 

@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useNavigate, useLocation } from "react-router-dom";
+type MenuItems = {
+  name: string;
+  icon: string;
+  path: string;
+};
 
-function Tags() {
+function Menu() {
   const location = useLocation();
   const navigate = useNavigate();
 
   const [isSelected, setIsSelected] = useState<"Home" | "Tag">("Home");
 
-  const menu = [
+  const menu: MenuItems[] = [
     { name: "Home", icon: "fa-home", path: "/home" },
     { name: "Tag", icon: "fa-tags", path: "/tags" },
   ];
 
-  const handleClick = (item: any) => {
+  const handleClick = (item: MenuItems): void => {
     navigate(item.path);
   };
 
@@ -25,7 +30,7 @@ function Tags() {
     }
   }, [location.pathname]);
 
-  const hideonMobile =
+  const hideonMobile: boolean =
     location.pathname.startsWith("/tags") ||
     location.pathname.startsWith("/results");
 
@@ -71,4 +76,4 @@ function Tags() {
   );
 }
 
-export default Tags;
+export default Menu;

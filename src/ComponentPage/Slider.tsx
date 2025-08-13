@@ -5,10 +5,10 @@ type sliderProps = {
 };
 
 function Slider({ onChangeValue }: sliderProps) {
-  const steps = [3, 6, 9, 12, 15, 50];
-  const [index, setIndex] = useState(steps.indexOf(15));
-  const value = steps[index];
-  const percent = (index / (steps.length - 1)) * 100;
+  const steps: number[] = [3, 6, 9, 12, 15, 50];
+  const [index, setIndex] = useState<number>(steps.indexOf(15));
+  const value: number = steps[index];
+  const percent: number = (index / (steps.length - 1)) * 100;
 
   useEffect(() => {
     if (onChangeValue) onChangeValue(value);

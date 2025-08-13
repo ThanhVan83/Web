@@ -13,7 +13,7 @@ function DefaultCalendar({
 }: DefaultCalendarProps) {
   const today = new Date();
 
-  const [viewDate, setViewDate] = useState(
+  const [viewDate, setViewDate] = useState<Date>(
     initialDate
       ? new Date(initialDate.getFullYear(), initialDate.getMonth(), 1)
       : new Date(today.getFullYear(), today.getMonth(), 1)
@@ -23,7 +23,7 @@ function DefaultCalendar({
 
   const [mode, setMode] = useState<"Calendar" | "Year">("Calendar");
 
-  const handleOk = () => {
+  const handleOk = (): void => {
     if (selectedDate) {
       setTimeout(() => {
         onSelectDate(selectedDate);
@@ -31,7 +31,7 @@ function DefaultCalendar({
     }
   };
 
-  const monthNames = [
+  const monthNames: string[] = [
     "January",
     "February",
     "March",
@@ -45,9 +45,9 @@ function DefaultCalendar({
     "November",
     "December",
   ];
-  const weekdays = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+  const weekdays: string[] = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-  const prevMonth = () => {
+  const prevMonth = (): void => {
     if (mode === "Calendar") {
       setViewDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
     } else {
@@ -55,7 +55,7 @@ function DefaultCalendar({
     }
   };
 
-  const nextMonth = () => {
+  const nextMonth = (): void => {
     if (mode === "Calendar") {
       setViewDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
     } else {
@@ -63,44 +63,47 @@ function DefaultCalendar({
     }
   };
 
-  const daysInMonth = new Date(
+  const daysInMonth: number = new Date(
     viewDate.getFullYear(),
     viewDate.getMonth() + 1,
     0
   ).getDate();
 
-  const firstDayId = new Date(
+  const firstDayId: number = new Date(
     viewDate.getFullYear(),
     viewDate.getMonth(),
     1
   ).getDay();
 
-  const prevMonthDays = new Date(
+  const prevMonthDays: number = new Date(
     viewDate.getFullYear(),
     viewDate.getMonth(),
     0
   ).getDate();
 
-  const cells = Array.from({ length: 42 }, (_, idx) => {
-    const dayNum = idx - firstDayId + 1;
-    if (dayNum < 1)
+  const cells: Array<{ day: number; type: string }> = Array.from(
+    { length: 42 },
+    (_, idx) => {
+      const dayNum = idx - firstDayId + 1;
+      if (dayNum < 1)
+        return {
+          day: dayNum + prevMonthDays,
+          type: "prev",
+        };
+      if (dayNum > daysInMonth)
+        return {
+          day: dayNum - daysInMonth,
+          type: "next",
+        };
       return {
-        day: dayNum + prevMonthDays,
-        type: "prev",
+        day: dayNum,
+        type: "current",
       };
-    if (dayNum > daysInMonth)
-      return {
-        day: dayNum - daysInMonth,
-        type: "next",
-      };
-    return {
-      day: dayNum,
-      type: "current",
-    };
-  });
+    }
+  );
 
-  const startYear = Math.floor(viewDate.getFullYear() / 20) * 20;
-  const years = Array.from({ length: 20 }, (_, i) => startYear + i);
+  const startYear: number = Math.floor(viewDate.getFullYear() / 20) * 20;
+  const years: number[] = Array.from({ length: 20 }, (_, i) => startYear + i);
 
   const isToday = (day: number) =>
     day === today.getDate() &&
@@ -149,7 +152,7 @@ function DefaultCalendar({
         <div className="min-h-[260px] transition-all duration-300 ease-in-out">
           {mode === "Year" ? (
             <div className="grid grid-cols-4 text-center text-base text-white mb-[28px] gap-y-5">
-              {years.map((y) => (
+              {years.map((y: number) => (
                 <div
                   key={y}
                   className={`  h-[34px] rounded-[2px] flex items-center justify-center  cursor-pointer

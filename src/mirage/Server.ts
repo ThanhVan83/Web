@@ -19,6 +19,9 @@ export function makeServer() {
       photo:Model,
       tag:Model
     },
+
+    
+
     factories:{
       tag:Factory.extend({
         id(i) {
@@ -64,7 +67,7 @@ export function makeServer() {
     seeds(server){
        
       
-      Array.from({ length: 100 }, (_, i) => {
+      Array.from({ length: 1000 }, (_, i) => {
     server.create("photo", {
       id: String(i + 1),
       title: `This is a title`,
@@ -110,6 +113,7 @@ export function makeServer() {
   });
 
       this.get("/photos", (schema:any,request) =>{
+
          let page=Number(request.queryParams.page) || 1;
 
          let perPage=9;
@@ -119,15 +123,15 @@ export function makeServer() {
          let paginated=allPhotos.slice((page-1)*perPage,page*perPage);
 
          return{
-          photos:paginated,
-          total:allPhotos.length
+          photos:paginated
+          
          }
 
 
       } );
 
       this.get("/users",(schema:any,request) =>{
-        let page=Number(request.queryParams.page) || 1;
+         let page=Number(request.queryParams.page) || 1;
 
          let perPage=13;
 

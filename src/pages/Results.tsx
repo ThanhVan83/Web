@@ -3,7 +3,6 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import Button from "../ComponentPage/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import Loading from "../ComponentPage/Loading";
-
 type typeResults = {
   id: string;
   title: string;
@@ -13,19 +12,19 @@ type typeResults = {
 
 function Results() {
   const [photos, setPhotos] = useState<typeResults[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [isInfiniteMode, setIsInfiniteMode] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true);
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isInfiniteMode, setIsInfiniteMode] = useState<Boolean>(false);
 
   const observer = useRef<IntersectionObserver | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  const initialVisible = location.state?.results ?? 9;
-  const [visibleCount, setVisibleCount] = useState(initialVisible);
+  const initialVisible: number = location.state?.results ?? 9;
+  const [visibleCount, setVisibleCount] = useState<number>(initialVisible);
 
   const lastPhotoRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -59,11 +58,13 @@ function Results() {
       });
   }, [page]);
 
-  const displayedPhotos = isInfiniteMode
+  const displayedPhotos: typeResults[] = isInfiniteMode
     ? photos
     : photos.slice(0, visibleCount);
 
-  const handleClick = () => navigate("/Home");
+  const handleClick = (): void => {
+    navigate("/Home");
+  };
 
   return (
     <div className="flex w-full h-screen bg-black">
@@ -97,11 +98,11 @@ function Results() {
 
           <div className="flex-1 flex flex-col relative">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 justify-items-center">
-              {displayedPhotos.map((photo, index) => {
+              {displayedPhotos.map((photo, index: number) => {
                 const isLast = index === displayedPhotos.length - 1;
                 return (
                   <div
-                    key={photo.id}
+                    key={`${photo.id}-${index}`}
                     ref={isInfiniteMode && isLast ? lastPhotoRef : null}
                     className="h-full"
                   >
@@ -127,7 +128,7 @@ function Results() {
               </div>
             )}
 
-            {!isInfiniteMode && visibleCount < photos.length && (
+            {!isInfiniteMode && hasMore && (
               <div className="mt-4">
                 <Button
                   label="More"

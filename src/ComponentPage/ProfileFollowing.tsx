@@ -14,7 +14,7 @@ type User = {
 
 function ProfileFollowing() {
   const [users, setUsers] = useState<User[]>([]);
-  const [isloading, setIsLoading] = useState(true);
+  const [isloading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch("/api/users")
@@ -25,9 +25,9 @@ function ProfileFollowing() {
       });
   }, []);
 
-  const followingUsers = users.filter((user) => user.isFollowing);
+  const followingUsers: User[] = users.filter((user) => user.isFollowing);
 
-  const toggleFollow = (id: string) => {
+  const toggleFollow = (id: string): void => {
     setUsers((prev) =>
       prev.map((user) =>
         user.id === id ? { ...user, isFollowing: !user.isFollowing } : user
@@ -40,7 +40,7 @@ function ProfileFollowing() {
       {isloading ? (
         <Loading />
       ) : (
-        followingUsers.map((user) => (
+        followingUsers.map((user: User) => (
           <div
             key={user.id}
             className="flex items-center justify-between p-4 bg-[#1B1B1B] text-white w-full max-w-[375px]"

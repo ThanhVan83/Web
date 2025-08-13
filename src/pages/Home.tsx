@@ -8,9 +8,9 @@ import { useState } from "react";
 function Home() {
   const navigate = useNavigate();
 
-  const [results, setResults] = useState(15);
+  const [results, setResults] = useState<number>(15);
 
-  const handleClick = () => {
+  const handleClick = (): void => {
     navigate("/results", { state: { results } });
   };
   return (

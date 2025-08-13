@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Menu from "./ComponentPage/Menu";
 import TagsGrid from "./pages/TagGrid";
 import Results from "./pages/Results";
+
 function App() {
   return (
     <Router>

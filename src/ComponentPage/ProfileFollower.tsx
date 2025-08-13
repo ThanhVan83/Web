@@ -14,13 +14,13 @@ type User = {
 
 function ProfileFollower() {
   const [users, setUsers] = useState<User[]>([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const toggleFollow = (id: string) => {
+  const toggleFollow = (id: string): void => {
     setUsers((prev) =>
       prev.map((user) =>
         user.id === id ? { ...user, isFollowing: !user.isFollowing } : user
@@ -63,7 +63,7 @@ function ProfileFollower() {
     };
   }, [page]);
 
-  const followers = users.filter((u) => u.isFollower);
+  const followers: User[] = users.filter((u) => u.isFollower);
 
   return (
     <div>
@@ -71,7 +71,7 @@ function ProfileFollower() {
         <div className="p-4 text-gray-400">No followers yet</div>
       )}
 
-      {followers.map((user, index) => {
+      {followers.map((user: User, index: number) => {
         const isLast = index === followers.length - 1;
         return (
           <div
