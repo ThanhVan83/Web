@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import DefaultCalendar from "./DefaultCalendar";
 import InputBirthday from "./InputBirthday";
 
@@ -13,14 +13,17 @@ function Calendar() {
     e.preventDefault();
   };
 
-  const handleSelectDate = (date: Date) => {
-    setSelectedDate(date);
-    setIsFocused(false);
+  const handleSelectDate = useCallback(
+    (date: Date) => {
+      setSelectedDate(date);
+      setIsFocused(false);
 
-    setTimeout(() => {
-      inputRef.current?.blur();
-    }, 0);
-  };
+      setTimeout(() => {
+        inputRef.current?.blur();
+      }, 0);
+    },
+    [selectedDate, isFocused]
+  );
   useEffect(() => {
     console.log("Selected date:", selectedDate);
   }, [selectedDate]);

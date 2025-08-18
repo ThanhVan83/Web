@@ -1,6 +1,6 @@
 import ButtonContained from "./ButtonContained";
 import ButtonOutline from "./ButtonOutline";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Loading from "./Loading";
 
 type User = {
@@ -20,13 +20,13 @@ function ProfileFollower() {
 
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const toggleFollow = (id: string): void => {
+  const toggleFollow = useCallback((id: string) => {
     setUsers((prev) =>
       prev.map((user) =>
         user.id === id ? { ...user, isFollowing: !user.isFollowing } : user
       )
     );
-  };
+  }, []);
 
   const lastUserRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -63,7 +63,7 @@ function ProfileFollower() {
     };
   }, [page]);
 
-  const followers: User[] = users.filter((u) => u.isFollower);
+  const followers = useMemo(() => users.filter((u) => u.isFollower), [users]);
 
   return (
     <div>

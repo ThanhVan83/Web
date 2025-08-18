@@ -1,6 +1,6 @@
 import ButtonContained from "./ButtonContained";
 import ButtonOutline from "./ButtonOutline";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Loading from "./Loading";
 
 type User = {
@@ -25,15 +25,18 @@ function ProfileFollowing() {
       });
   }, []);
 
-  const followingUsers: User[] = users.filter((user) => user.isFollowing);
+  const followingUsers = useMemo(
+    () => users.filter((user) => user.isFollowing),
+    []
+  );
 
-  const toggleFollow = (id: string): void => {
+  const toggleFollow = useCallback((id: string) => {
     setUsers((prev) =>
       prev.map((user) =>
         user.id === id ? { ...user, isFollowing: !user.isFollowing } : user
       )
     );
-  };
+  }, []);
 
   return (
     <div>

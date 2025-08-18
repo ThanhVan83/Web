@@ -11,7 +11,7 @@ type typeTag = {
 function TagsGrid() {
   const navigate = useNavigate();
 
-  const handleClick = (): void => {
+  const handleClick = () => {
     navigate("/Home");
   };
   const [tags, setTags] = useState<typeTag[]>([]);
@@ -45,7 +45,7 @@ function TagsGrid() {
         )}
 
         <div className="grid max-sm:grid-cols-2 sm:grid-cols-5 gap-1">
-          {tags.map((tag: typeTag) => (
+          {tags.map((tag) => (
             <div
               key={tag.id}
               className="max-w-[150px] max-h-[200px] flex flex-col mb-3.5 "

@@ -3,16 +3,16 @@ import InputKeyWord from "../ComponentPage/InputKeyWord";
 import Slider from "../ComponentPage/Slider";
 import Profile from "../ComponentPage/Profile";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 function Home() {
   const navigate = useNavigate();
 
   const [results, setResults] = useState<number>(15);
 
-  const handleClick = (): void => {
+  const handleClick = useCallback(() => {
     navigate("/results", { state: { results } });
-  };
+  }, [results]);
   return (
     <div className="w-full h-screen bg flex">
       <div className="flex-1 flex flex-col  items-center px-5 bg-black ">

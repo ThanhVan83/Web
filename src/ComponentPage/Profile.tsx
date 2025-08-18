@@ -2,7 +2,7 @@ import { useState } from "react";
 import ProfileFollower from "../ComponentPage/ProfileFollower";
 import ProfileFollowing from "./ProfileFollowing";
 
-function Profile() {
+const Profile = () => {
   const [isSelected, setIsSelected] = useState<"followers" | "following">(
     "followers"
   );
@@ -41,6 +41,6 @@ function Profile() {
       </div>
     </div>
   );
-}
+};
 
 export default Profile;

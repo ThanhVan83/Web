@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 type DefaultCalendarProps = {
   initialDate: Date | null;
@@ -23,13 +23,13 @@ function DefaultCalendar({
 
   const [mode, setMode] = useState<"Calendar" | "Year">("Calendar");
 
-  const handleOk = (): void => {
+  const handleOk = useCallback(() => {
     if (selectedDate) {
       setTimeout(() => {
         onSelectDate(selectedDate);
       }, 0);
     }
-  };
+  }, [selectedDate]);
 
   const monthNames: string[] = [
     "January",
@@ -47,79 +47,83 @@ function DefaultCalendar({
   ];
   const weekdays: string[] = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
-  const prevMonth = (): void => {
+  const prevMonth = useCallback(() => {
     if (mode === "Calendar") {
       setViewDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
     } else {
       setViewDate((d) => new Date(d.getFullYear() - 20, d.getMonth(), 1));
     }
-  };
+  }, [mode]);
 
-  const nextMonth = (): void => {
+  const nextMonth = useCallback(() => {
     if (mode === "Calendar") {
       setViewDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
     } else {
       setViewDate((d) => new Date(d.getFullYear() + 20, d.getMonth(), 1));
     }
-  };
+  }, [mode]);
 
-  const daysInMonth: number = new Date(
-    viewDate.getFullYear(),
-    viewDate.getMonth() + 1,
-    0
-  ).getDate();
+  const cells = useMemo(() => {
+    const daysInMonth: number = new Date(
+      viewDate.getFullYear(),
+      viewDate.getMonth() + 1,
+      0
+    ).getDate();
 
-  const firstDayId: number = new Date(
-    viewDate.getFullYear(),
-    viewDate.getMonth(),
-    1
-  ).getDay();
+    const firstDayId: number = new Date(
+      viewDate.getFullYear(),
+      viewDate.getMonth(),
+      1
+    ).getDay();
 
-  const prevMonthDays: number = new Date(
-    viewDate.getFullYear(),
-    viewDate.getMonth(),
-    0
-  ).getDate();
+    const prevMonthDays: number = new Date(
+      viewDate.getFullYear(),
+      viewDate.getMonth(),
+      0
+    ).getDate();
 
-  const cells: Array<{ day: number; type: string }> = Array.from(
-    { length: 42 },
-    (_, idx) => {
+    return Array.from({ length: 42 }, (_, idx) => {
       const dayNum = idx - firstDayId + 1;
-      if (dayNum < 1)
-        return {
-          day: dayNum + prevMonthDays,
-          type: "prev",
-        };
+      if (dayNum < 1) return { day: dayNum + prevMonthDays, type: "prev" };
       if (dayNum > daysInMonth)
-        return {
-          day: dayNum - daysInMonth,
-          type: "next",
-        };
-      return {
-        day: dayNum,
-        type: "current",
-      };
-    }
-  );
+        return { day: dayNum - daysInMonth, type: "next" };
+      return { day: dayNum, type: "current" };
+    });
+  }, [viewDate]);
 
   const startYear: number = Math.floor(viewDate.getFullYear() / 20) * 20;
   const years: number[] = Array.from({ length: 20 }, (_, i) => startYear + i);
 
-  const isToday = (day: number) =>
-    day === today.getDate() &&
-    viewDate.getMonth() === today.getMonth() &&
-    viewDate.getFullYear() === today.getFullYear();
+  const isToday = useCallback(
+    (day: number) => {
+      return (
+        day === today.getDate() &&
+        viewDate.getMonth() === today.getMonth() &&
+        viewDate.getFullYear() === today.getFullYear()
+      );
+    },
+    [today, viewDate]
+  );
 
-  const isSelected = (day: number) =>
-    selectedDate &&
-    day === selectedDate.getDate() &&
-    selectedDate.getMonth() === viewDate.getMonth();
-  selectedDate?.getFullYear() === viewDate.getFullYear();
+  const isSelected = useCallback(
+    (day: number) => {
+      return (
+        selectedDate !== null &&
+        day === selectedDate.getDate() &&
+        selectedDate.getMonth() === viewDate.getMonth() &&
+        selectedDate.getFullYear() === viewDate.getFullYear()
+      );
+    },
+    [selectedDate, viewDate]
+  );
 
-  const selectYear = (year: number) => {
-    setViewDate(new Date(year, viewDate.getMonth(), 1));
-    setMode("Calendar");
-  };
+  const selectYear = useCallback(
+    (year: number) => {
+      setViewDate(new Date(year, viewDate.getMonth(), 1));
+      setMode("Calendar");
+    },
+    [viewDate]
+  );
 
   return (
     <div className="w-[320px] m-auto">
